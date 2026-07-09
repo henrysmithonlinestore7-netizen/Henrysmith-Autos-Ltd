@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HenrySmith autos Ltd</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">HENRYSMITH AUTOS LTD</div>
+      <div class="controls">
+        <button id="downloadTxt">Download original .txt</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main>
+        <section class="card preview">
+          <h2>Quick preview</h2>
+          <div class="note">This page preserves your original uploaded text below. Use the "Download original .txt" button to save a copy.</div>
+        </section>
+
+        <section class="card">
+          <h2>Original file contents</h2>
+          <pre id="original" aria-label="Original file content">Loading original text…</pre>
+        </section>
+      </main>
+
+      <aside class="right">
+        <div class="card">
+          <h2>Actions</h2>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button id="copyBtn" style="background:#0b6ddf">Copy original text</button>
+            <button id="openRaw" style="background:#059669">Open raw in new tab</button>
+            <div style="color:var(--muted);font-size:0.9rem">Tip: open raw to view or inspect, or download to save locally.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Notes</h2>
+          <div class="note">
+            - The original content contains CSS, HTML-like fragments and Kivy/Python code. It is shown exactly as provided.<br>
+            - If you want a cleaned HTML dashboard or separate files for CSS and the Kivy app, tell me which sections to extract and I'll produce them.
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="card" style="margin-top:18px">
+      © 2026 HENRYSMITH AUTOS LTD — page generated from provided text
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
