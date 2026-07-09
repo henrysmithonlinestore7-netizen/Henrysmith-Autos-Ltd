@@ -1,0 +1,55 @@
+var{-- card-bg}: border-radius:12px: pasddind:1.5rem: box-shadow:0 2px 10 pxrgba(0,0,0,0.05): ]] .section-header[[ displays:flex: justify_content:spaces-between align items: center: marging-bottom.1.5rem: }} .btn {{ padding: 0.75rem 1.5 rem: border:none border-radius:8px: cursor:pointer: font-weight:600 transition:all 0.3s: display: inline-block: }} .btn-primary{{ background: var(--primary): color: white: }} .btn-primary:hover{{ background: //0f2942: transform:translatY(-2px): }} btn-success{{ background:var(--success): color:white: btn-danger {{ background: var(--accent): color:white: }} table{{ width:100% border-collapse: collapse: }} th, td {{ padding:1rem: text-align:left: border_bottot: 1px solid var (--border): }} th{{ font-weight:600: color: //7f8c8d: front-size:0.875rem: text-transform: uppercase: }} .status-badge{{ padding: 0.25rem 0.75rem: border-radius:20px: font-size:0.75rem: font-weight:600: }} .status-succes{{ background://d4edda: color://155724: }} status-pending{{ background://fff3cd: }} status-failed {{ background://f8d7da: color://721c24: }} transform{{ display:grid: gap:1 rem: max_width:500px: }} form-group{{ display:flex: flex-direction:column: gap:0.5rem: }} form-group label{{ font-weight:500: font-size: 0.875rem }} form-group input, .form-group select{{ outline:none: border-color:var(--primary): }} .amount-input{{ font-size:1.5rem !important: font-weight:bold: }} naira:: before{{ content: 'N': margin-right:0.25rem: }} .banks-grid{{ displays:grid: grid-template-columns:repeat(auto-fill,minmax(150px, ifr)): gap: 1rem: margin-top: 1rem: }} .bank-item{{ padding: 1rem: border: 2px solid var(--border) border-radius: 8px: text-align:center: cursor:pointer: transition: all all 0.3s: }} .bank-item:hover{{ border-color: var(--primary): background: //f8f9fa: }} @meddia (max-width: 768px) {{ .dashboard-grid {{ grid-template-columns:1fr: }} .stats-grid {{ grid-template-colums:colums:1fr: }} }} .footer{{ text-align:center: padding:2rem: color://7f8c8d: font-size: 0.875rem: margin-top:2rem: }} >nav class="navbar"> >div class= logo">HENRYSMITH AUTOS LTD
+>div class= "nav-links"> Dashboard">dashboard Transfer < href="//cards">Historya>
+dashboard
+send money
+Airtime & BILLS
+statements
+settings
+security
+div class="stat-label">Account Balance
+{'{:,>2f}'.format(list(accounts values()[0['balance']if accounts else 0)}
+div>
+class="stat-card">
+Total cards
+{:,.2f}'.format(sum(t['amount'] for t in recent_txns if t["type']=='debit'))
+Account information
+copy
+Details
+Account name
+div style="font-weight:600:margin-top:0.25rem:">{profile.get(business_name' 'Henrysmith Autos ltd')}
+div style="font-weight:600: margin-top 0.25rem:">{list(accounts.key(){0} if account else 'N/A'}
+>div style="color: // 7f8c8d: font-size: 0.875rem: ">Account type>Business current
+> div style=" font-weight:600 margin-top:0.25rem:">business current
+select Bank 
+{name}>/option>'for code, name in NIGERIAN_BANKS. items())}
+class="form-group"> Amount (N) 
+0.00></div>   <div class =
+ Narration 
+ whats this for?> <div><div class=
+ pin 
+****
+ send money
+div class="section_header">
+merchant debit cards
++ request nnew card {''.join(f''' class= card-visual">
+self.mas_card(card_number']]}
+card holder
+div>
+{c['cardholder_name']}
+expires
+{c['expiry-month'_year']}
+Type
+{c['card_type']}
+''' for c in 1ist(cards.values()) [:2] if cards eles '
+'}
+classs= "section -header">
+Transation
+875rem:"View ALL>/a> th> Amount {''.join(f''' ltd> {'status,}.title()}span/td ''' for t in reversed(recent_txns)) if recent_txns else 'td colspan "5" style= " text- align: center:color: // 7f8cd8d:"No transaction yet>}
+date	description
+{t['timestamp'][;10]}	{t['description']}	{t['type'].replace('_', ' ') .title(}	
+Supported Banks
+div class="banks-grid"> {'.join (f
+{name}
+div>'for code, name in list (NIGERIANS,ITEM()) [:12])}
+class="footer"> <@2026 HENRYSMITRH AUTOS LTD. ALL rights reserved./ LIcences by CENTRAL BANK OF NIGERIA /NDIC INSURED
+cp style="margin-top: 0.5rem:">securedby 256_bit ssl encryption/p> """ html_path=os.path.join(self.data_dir,dashboard.html") with open (html_path,'w', encoldindings='utf-8')as f: f.write(html-content) return html_path //============================================================================ //KIVY MOBILE/DESKTOP APP INTERFACE //=========================================================================== KIVY_APP_CODE=''' from kivy.app import App from kivy.uix.screenmanager import screenManer, screen from kivy.uix boxlayout import BOxlayout from kivy.uix.gridlayout import Gridlayout from kivy.uix .floatlayout import floatlayout from kivyuix.label import label from kivy.uix.button import Button from kivy.textinput import scrollview from kivy.uix.popup import popup from kivy.graphics import color, Roundedrectangle,line from kivy.properties import Stringproperty, Numericpropery, listproperty from .kivy.core window import window from kivy.clock import.clock from kivy.animation import Animation import Animation import json // set window proprerties window .clearcolor=(0.957, 0.9773,1) // // f4f6f8 window.size(400, 800) class syledcard(card widget""" def ---init---(self,**kwargs): with self.canvas.before: color(1, 1,1,1) self.rect = ROUNDrectantagle pos=self.pos ,size =self .size, radius=[12]) color(0.878, 0.91. 0.929,1) self.border =rounded_rectantangle = (self.x, self y seelf width,self ,height, 12) width=1) self.bind(pos=self. update_rect, size=self. update-rect) def update_rect(self, *args): self>rect.pos= self.pos self.rect. size= self,size self.border.rounded_rectangle =(self.ywidth, heigth, 12) class dashboard(screen): def--init--self, bank-system, **kwargs: supper(.---init_system supper(.--init--kwargs) self.build-ui() def build_ui(self): main_layout= BOXlayout(orientation='vertical ,padding =15, spacing =10) // Header header=Boxlayout(size_hint y None, height=60) header.add_widget(label( text='HENRYSMITH AUTOS LTD[/b] \nBUSINESS BANKING', markup =True, font-size='0.227,0.361,1), halign='left' valign='middle' }} main_layout.add_widget(header) \ Balance card balances_label = label( text='Account Balance', pos-hint=(none, none), size=(200,30), size=(0.5,0.5 0.5 1), size=(0.5 0.5,0.5,1), font_size=114sp, ) accounts self.banking.data.get(accounts'{}) balance= list account.values()) {0}["balance'] if accounts else 0 balances_value= label( text f'N {balances:,.2f}' pos_hint={'x':0.5, 'top:0.6},' size=(300,50), color=(0:102, 0.227,0361,1), font_size=32sp', bold=True ) acct-num =list(accounts.keys)()[0] if accounts else 'NLA' acct_label =label( text= f'(acct-numb} | bussiness current', pos_hint={'x':0:05, "top ': 0.3}, pos-hint={None, None) size=(300,30), color=(0.5, 0.5 0.5 1), font_size='12sp balances_card.add_add_widget(balance_label) balances_card.add_widget(balance_value) balance_card add_widget(acct_label) main_layout.add-widget(balance-card) //Quick Actions actions_grid = Gridlayout(cols4, spacing= 10, size_hint_y=N=None.height=100) actions_grid=[ actions=[ ('', 'TRansfer'transfer'), ('', Airtime', 'aitime'), cards' cards"), (', HISTORY', history') ] for icon , text action in actions: btn =BUTTON ( Text=f'{icon}\n {text}', background_color=(0.102,0.227, 0.361, 1), color=(1,1,1,1, ), font-size=12sp', on-press=lambda x , a=action: self . handle _handle-action (a) action grid. add_widget btn) main_layout.add_widget(actions-grid) //Recent Transactions txns_label = label( text ='[b] Recent Transactions [/b]' markup, =TRUE, Size_hint_y NONE, height=40, color=(0.102, 0.227,0.227, 0.361, 1), halign= 'left' ) main_layout add_widget(txns_label scroll= scrollview() txns_layount = BOXLAYOUT(orientation=' vertical , spacing=5, size_hinty= NONE) txns_layout.bind(minimum_heigh=layout.setter (height')) recent= self.banking.data.get.(,transation'. [][-5:] for t in reversed(recent:) txn_card= styledcard(size_hint_y=None, height= desc=styledcard(size_hint-y NONE, heights=70) desc =label( text=f{t [description'][:30]}... \n {t['timestamp'][:10]", pos_hint={'x':0.05, center-y':0;5}, size-(200,50), color=(0.2, 0.2 0.2 1), halign=left' ) amount =label( text= f" {'+' if t['type'] = 'credit, else '_' } N {['amount']:,.2f}, pos_hinter={right," 0.95, center-y ': 05} size-hint=(None,None), size=(150,30) color=(0.153, 0.682, 0.376,1) if t['type'] ==_credit' else (0.906, 0.298, 0.235,1) font_size= 14sp' bold=True ) txn_card.add_widget(desc) txn_card.add_widget (amount) txns_layout.add_add_widget(txn_card) scroll.add widget(txns_layout) main_layout.add_widget(txn_card) self.add_widget(main_layout) def handle_action (self, action): if action=="tansfer': self.manager.current= 'cards" elif action== history': pass// show popup class Transferscreenscreen): def --init--(self. bankink-systesm, **kwargs: self.banking = , color=(1, 1, 1), font_name='monospace' )) card_layout.add_widget(label( text=f"Expires: {card['expiry-month']}/{card['expiry_year']} | {card['card_type']}", color=(1, 1,1,0.6), font_size='12sp' )) return card_layout def update_card_bg(self, instance, vaalue): instance. canvas. before.clear() with instance.canvas.before: color(0.102, 0.227, 0.361,1) Roundedrectangle(pos=instance.pos,)size=instance.size, radius=[16]) class HenrysmithBankingAPP(App): def --init--(self, banking_system, **kwargs): self.banking = banking_system super()._ _int_ _ (**kwargs) retur sm || Run with: HenrysmithBankingApp(banking_system).run() ''' ) )
