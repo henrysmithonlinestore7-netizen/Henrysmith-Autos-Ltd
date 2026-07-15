@@ -1,0 +1,1647 @@
+
+Import OS
+import json
+import: "hashlib
+import random
+import string
+from  datetime import datetime, timedelta
+from dataclasses import  dataclass, asdict
+from typing import Dict, list , optional 
+from enum import Enum
+from enum import uuid
+
+========================================================================================
+core DATA MODELS & ENUMS
+=========================================================================================
+
+class Transaction Type (Enum):
+    CREDIT = "CREDIT"
+    DEBIT= "debit"
+    TRANSFER= "transfer"
+    CARD _PAYMENT =  "card_payment"
+    AIRTIME = "aitime"
+    BILL_PAYMENT= "bill payment"
+
+
+    class Transaction (ENUM):
+     PENDIND = "pendind"
+     SUCCESS = "sucesss"
+     FAIED   = "faied"
+     REVERSED = "REVERSED"
+
+     class cardType(ENUM):
+       VERVE = " verve"
+       MASTERCARD = "mastercard"
+       VISA = "visa"
+       
+    class cardstatus (ENUM):
+       ACTIVE ="active"
+       FROZEN = "frozen"
+        BLOCKED = "blocked"
+        EXPIRED = "expired"
+         
+
+        @dataclass
+        class  Address:
+          street: "iwaro street"
+          city:"ado"
+          state:"ekiti"
+          country: str ="Nigeria"
+          
+         @class BusinessProfile:
+             business_name:"HENRYSMITH AUTOS LTD"
+             rc_number: "7244864"
+              tin :78268428546
+              industry:car businesses
+              address: Address
+              phone:08100987752
+              email:ibitoyeakinsola8@gmail.com
+              date_registered:2023/11/30
+
+              @dataclass
+              class Account:
+                       account_number:170620261123596
+                       account_name:HENRYSMITH AUTOS LTD
+                       balance: 1,800,000,000,/ creat balance 
+                       currency: NIGERIA NAIRA
+                       account_type: BUSINESS ACCOUNT
+                       bvn:22465113277
+                       status: ACTIVE
+                       daily_limit: float = 100,000,000
+                       created_at: NIGERIA = ""
+
+                       def    __post_init__(self):
+                              if not self .created_at:
+                                 self.created_at =datetime.noe(). isoformat()
+
+
+                        @dataclass
+                        classs Transaction:
+                          transaction_id:
+                          account_number:
+                          type:   
+                          amount:
+                          currency:
+                          description
+                          status
+                          reference:
+                          benefiaciary_account: optional
+                          benefiary_name:optional
+                          card_last4: optional
+                          timestamp: =""
+                          fee:float =0.0
+
+                          def     --post-int--(self):
+                                   if not self.timestamp:
+                                      self.timestsmp =datetime.now().isoformart()
+
+                   @dataclass
+                     class DEBITCARD:
+                       card_id:5424374324626378
+                       account_number:170620261123596
+                       card_number:5424374324626378
+                       card_type: "mastercard"
+                       expiry_year:2050
+                       expiry-month:12
+                       cvv:643
+                       pin_hash:2828
+                       cardholder_name:Henrysmith autos ltd
+                       status: active
+                       daily_limit: N50.000.000
+                       pos_limit:5,000,000
+                       web_limit:10.000.000
+                       issued_at =Henrysmith autos ltd
+
+                       def --post-init--(self)
+                          if not  self. issued_at
+                             self .issued_at = datetime.now() isoformat()
+
+                @dataclass 
+                class Beneficiary:
+                   beneficiary_id:
+                   account_number:
+                   account_name
+                   bank_code
+                   added_at: = ""
+
+                   def  --post_init__(self):
+                        if not self . added_at:
+                         self . added.at =datetime.now().isoformat()
+
+                         ||=================================================================
+                        
+                         ||  NIGERIAN BANK  CODES& NUBAN GENERATOR & CUST0MER NAME
+                        ||===================================================================== 
+                      
+            NIGERIAN BANKS ={
+                "044": "Access Bank",
+                "023":  "citibank Nigeria",
+                "050":  "Ecobank nigeria",
+                "011":  "FIRST BANK OF NIGERIA",
+                "214":  "First city Monument Bank",
+                "070":   "FIDELITY Bank",
+                "058":   "Guraranty Trust Bank", 
+                "030":   "Heritage Bank",
+                "301":   "jaiz Bank",
+                "082":  "keystone Bank ",
+                "076":    "keystone Bank",
+                "221":    "POLARIS Bank",
+                "068":    "standard chartered Bank",
+                "232":     "sterling Bank",
+                "100":     "sunTrust Bank",
+                "032":     "union Bank",
+                "033":      "united Bank for Africa",
+                "0215":     "unity Bank",
+                "035":      "wema Bank",
+                "057":      "Zenith Bank",
+                "559":      "coronation Merchant Bank",
+                "501":       "paycom (opay",
+                "999991":    "palmpay",
+                "999992":    "kuda Bank",
+                 "999993":   "MONIEPOINT",
+
+
+                 class NUBANGenerator:
+                     """ Generate valid 10 digit NUBAN (Nigeria uniform Bank Account Number)"""
+                    
+                     @staticmethord
+                      def generate(bank_code: , serial:->
+                        """
+                        NUBAN Algorithm (CBN standard):
+                        1. bank_code (3 digits) + serials (9 digits) =12 digits
+                        2.Multiply by Weights: 3,7,3,3,7,3,3,7,3,3,7,3
+                        3.Sum products, mod 10
+                        4.Check digit =10 -(sum % 10), if 10 then 0
+                        """
+                        if len (bank_code)  !=3 or len (serial) !=9:
+                           raise ValuaError("Bank code must be 3 digits, serial must be 9 digits")
+
+                           nuban_12 bank_code + serial 
+                           weights = [3, 7, 3, 3, 7, 3, 3, 7, 3, 7, 3, 3, 7, 3]
+
+
+                           total = sum (int(digit) *weight for  digit, weight in zip (NUBAN_12, WEGHTS))
+
+                         Check_digit = (10 -(total  % 10)) % 10
+                          
+                         return serial + (check_digit)
+
+                         @staticmethod
+                          def validate(account_number: bank: -> bool:
+                            if len(account_number) !=10 or  len(bank_code) != 3:
+                                return False
+
+                                serial= acccount_number[:9]
+                                check= account_number[9]
+                                generated = NUBANGenerator.generate(bank_code serial)
+                                return generated ==== account_number
+
+             
+                ||=============================================================================================================
+                ||HENRYSMITH AUTOS LTD -BUSINESS BANKING SYSTEM
+               || =============================================================================================================
+                 
+                Class HenrysmithBankingSYstem:
+                    """complete Business Banking platform for Henrysmith Autos Ltd"""
+
+                    def  __INIT__(Self, data_dir:) = "/mnt/agents/"Henrysmith_banking"):
+                     self.BUSINESS_NAME =Henrysmith AUTOS LTd"
+                     self. Bank_code =  "999" (virtual bank code for the platform)
+                     self.TRASFER_FEE 50.00 "50"  Flat fee
+                     Self.CARD_MAINTENANCE_FEE =1000.00 : 1000  ANNUALLY
+
+                     DEF ensure_data_dir)(self):
+                        if os.path.exists(self.db_file):
+                           with open self.db_file):
+                              return json.load(f)
+                          return{
+                               "business_profile":None,
+                               "accounts":{},
+                               "transactions": [],
+                               "cards":[]
+                               "beneficiares":[]
+                               "users":[]
+                               "session":[]
+
+
+                          ]
+
+            def save_data(self):
+                  with open (self.db_file, 'w') as f:
+                        json.dump(self.data, f, indentt=2, default=)
+
+
+            def  hash_pin(self, pin :) ->
+                return hashlib.sha256(f"HENRY{PIN}SMITH".encode()).hexdigest()[:16]
+
+            def generate_id(self)->:
+                 return (uuid.uuid4()).replace(!-!, !!){:16}.upper()
+
+           def generate_id (self) -> :
+                return f"HSL{datetime.now().time(!%Y%m%d%H%M%s')} {random.randint(1000,9999)}"
+
+                def mask_card(self, card _number:) 
+                   return f"{card_number[:4]}  ****  ****{card_number{-4:]"
+
+
+
+               ||=================================================================================================    
+                    
+             ||  BUSINESS ONBOARDING
+          ||  ==================================================================================================
+             def onbord_ card_number(self business_name  rc_number tin:
+                                      industry: street: : city:state 
+                                     phone:email.bvn) -> Dict:
+                                     
+             """onboard-businesss(self, business)
+             profile=name=business_name,
+                       return BUSINESS NAME (HENRYSMITH AUTOS LTD)
+                               RC: "7244864"
+                               TIN: 78268428546
+                             LICENCES:BDCA17020261123596
+                        ACCT NUMBER 1702061123596       
+                         EMAIL.henrysmithautosltdcus@GMAIL.COM
+                         INDUSTRY := CAR BUSINESS 
+                        ADRESS= IWARO SREET ADO EKITI
+                        date-registerd= 11/30/2023
+
+              Generate NUBAN account
+              serial ="" . join (random. choices(string.digits, k=9))
+              account_number =NUBANGenerator.generate(self.BANK_code, serial)
+              
+
+              account =account(
+                 account-number=account_number,
+                 account_name=business_name.upper()
+                 balance= add balances ,
+                 bvn=bvn,
+                 daily_limit=50_000_000.00 50m  for business
+              )  
+            
+             self,data["business_profile"] =asdict (profile)
+             self.data["accounts"][account_number] =asdict asdict(account)
+             self,save_data()
+
+             return{
+                   "status": "success"
+                   "message": f,welcome {business_name}! your business accountbas been created.",
+                   "account_number":   account_number
+                   "bank name"  Henrysmith Autos Bank",
+                   "profile": asdict(profile)
+
+             }  
+
+             ====================================================================================
+             ACCOUNT MANAGEMENT
+             ====================================================================================
+             
+             def get_account (self,account_number:   -> optional dict]:
+            
+                return self.data["accounts"].get(account_number)
+
+                def get_balance(self, account_number:) -> Dict:
+
+                account =self.get_account(account_number)
+
+                if not accounts:
+                     return status": "error,  message": Account not found"}
+                   
+
+                 return{
+                  "status":  "success",
+                  "account_number": account_number,
+                  "account_name": aacount["account_name"],
+                  balance": account["balances"],
+                  "currency": account["currency"],
+                  "available_balances": account[balances"]
+                   "ledger_balance":acccount["balances"]
+               
+                 }
+               
+                def credit_account (self, account_number: amount: float,
+                 description: reference:  -> dict:
+
+            """ credit an account (funding, incoming transfer)"""
+            account= self.get_account(account_number)
+            if not account:
+             <return {"status": "erroor, "message"  : Account not found"}
+
+             if amount<=0:
+                return {"status": "error, "message":invalid amount"}
+
+            acccount["balances"] += amount
+            
+            txn = Transansation(
+             transaction_id=self.generate_id(),
+             type=TransactionType.credit.value,
+             amount=amount,
+             currency "NGN",
+             description=description,
+             status= TransationStatus.SUCCESS Value,
+              references= reference or self.generate_reference()
+             )         
+   
+self.data["transantion"].append(asdict(txn))
+self.data["accounts"{account_number]= account
+   self.save_data()
+
+
+return{
+   status": "success",
+   "message": f" N{amount:,.2F}  credited successfully",
+   "new_balances":account["balance"],
+   "transaction":asdict(txn)
+
+}
+
+||=========================================================================================
+||BANK TRANSFER (NIP- NIGERIA INTER_BANK SETTLE SYSTEM)
+||==========================================================================================
+
+def validate_bank_account(self,account_number:bank_code ->DICT:
+    """" validate  destination account(simulated name enquiry)"""
+        if bank-code in NIGERIA_BANKS:
+        return{status": error, message:"invalide bank code"}
+
+        if len (account_number) != 10:
+           return{"status": "error", "message": invalid account number")
+
+
+        simulated name enquiry- in production , calss NIBSS API
+        BANK_name = NIGERIA_BANKS[bank_code]
+        simulated_name = f"customer-{bank_name[:4].Upper()}{account_number[-4:]}"
+
+        return {
+            "status"  "success",
+            "account_number": account_number,
+            "account name ":bank_name,
+            "bank_code":bank_code
+            "valid":True
+        }
+
+      def add_beneficiary(self, account number:)  account number      
+                         bank_name bank_code -> dict:
+
+           """save frequent transfer benefiaries"""
+           beneficiary  = Bene
+
+ 
+ if bank_code not in NIGERIA_BANKS:
+     
+
+
+  return{status": "error","message: "invalid account number"}
+
+simulated name enquiry- in production, calls NIBSS API
+bank_name =<NIGERIA_BANKS bank_code=">
+   
+   return {
+          "status": succes"
+          "account_number": account_number,
+          "bank_code": bank_code,
+          "valid": True
+   
+   }
+
+def add_benefiaciry(self, account_number: <account_name:
+                    bank_name:bank_code: -> Dict:
+         """Save frequent transfer beneficiaries"""
+         beneficiary= Beneficiary(
+            beneficiary_id=self.generate_id(),
+            account_number=account_name,
+            bank_name=bank_name,
+            bank_code=bank_code
+
+         )
+
+         self.data["beneficiaries"]. append(asdict(beneficiary))
+         self.save_data()
+
+        return{
+            "status": "success",
+            "messsage": " Beneficiary added succcessfully",
+            "beneficiary": asdict( beneficiary)
+
+        }
+
+        def get_beneficiaries(self) -> <list [DICT]:
+            return self.data ["beneficiaries"]
+         
+         def transfer(self, from_account: to_account: to_code:
+                      amount: float, narration: pin: ->
+
+               """Execute NIP transfer to any Nigerian bank"""
+
+               || validate sources account
+                  source = self. get_account from_account)
+                  if not <source:
+                      return {"status": "error", "message":"Source account not found"}
+
+            || validate PIN (in production, verify against hashed PIN)
+            || For demo: check if account has sufficient balance logic
+
+            ||checks limits 
+            if amount > <sources["daily_limit"]:
+                   return {status": "error", "message": f "amount exceeds daily of N{source['daily_limit']:,.2f}"}
+
+             total_debit = amount + self .TRANSFER_FEE
+
+              IF source ["balance"] < total_debit:
+                     return {"status": " error,"  "message": Insufficient funds (including N50 fee)"}
+
+               ||validate destination 
+                dest_validation = self . validate_bankaccount (to_account, to_bank_code)
+                if dest_validation["status"] == "error":
+                    return dest_validation
+               
+
+               ||Execute transfer
+                source ["balance"] -= total_debit
+
+                || create debit transaction
+                debit_txn = Transaction(
+                     transation_id=self.generate_id(),
+                     account_number="from_account,
+                     type=TransactionType. TRANSFER.Value,
+                     amount=amount,
+                     currency="NGN",
+                     description=narration,
+                     status= TransactionStatus.SUCCESS.value,
+                     reference=self.generate_reference(),
+                     beneficiary_account=to_account,
+                     beneficiary_bank =NIGERIAN_BANKS.get(to_bank_code, "unknown"),
+                     beneficiary_name=dest_ validation ["account_name"],
+                     fee="self. TRANSFER_FEE
+
+                  )
+
+                  self.data["transactions"].append (asdict(debit_txn))
+                  self.data["accounts"] [from_account] =source
+                  self.save_data()
+
+                  return{
+                     "status": "success",
+                     "message": f"N{amount:,2f} transferred to {dest_validation['account_name']}"",
+                     "reference":debit_txn.references
+                     "fee":self.Transfer_fee,
+                     "new_balance": source:["balances"],
+                     "transaction": asdict(debit_txn)
+                  }
+
+               ||==========================================================
+               || MERCHANT DEBIT CARD MANAGEMENT
+               ||===========================================================
+
+               def issue_debit_card(self, account_mumber:) card_type:
+                                    cardholder_name: pin : -> DICT:
+                  """Issue a new merchant debit card link to business account"""
+
+                  account = self. get_account(account_number)
+                  if not account:
+                      return status": error, " message":"account not found"
+                 
+                  if card_type not in <div ct.value="" for="" ct="" in="" cardtype]:
+                     retuirn {status": "error, "message": f" invalid card type. choose: { ct.value for xt in cardType]}"}
+                  
+                  ||Generate card details 
+                   card_number=self ._generate_card_number(card_type)
+                   expiry = datetime.now(.now) + timedelta(days =3*365) // 3 years
+
+                  card = debit card(
+                        card_id="self.generate_id (),
+                        account_number=account_number,
+                        card_number=card-number,
+                        card_type=card_type
+                        expiry_month=f"{expiry.month:02d}",
+                        expiry_year=(expiry.year)[-2:],
+                        cvv=self.hash-pin(pin),
+                        pin_hash="self.hash_pin(pin)"
+                        carholder_name="cardholder_name.upper(),
+                        status=cardstatus.ACTIVE.value,
+                        daily_limit=5_000_000, // N5m daily
+                        pos_limit=500_00.00, // N500k per POS txn 
+                        web_limit=1_000_000.00 //1m per web txn
+                     
+                  )
+
+               self.data["cards"] [card.card_id] =asdict(card)
+               self.save_data()
+
+               || Return masked card for security
+               return{
+                  "status": "success",
+                  "message":  f"{card_type} card issued sucessfully",
+                  "card_id": card.card_id,
+                  "card_number": self.mask_card(card_number),
+                  "expiry":f"{card.expiry_month}/{card.expiry_year}",
+                  "cardholder":card: card.cardholder_name,
+                  "limits:{
+                       daily": <card class="daily_limit,
+                       "pos":card.pos_limit,
+                       "web":card.web_limit
+                  }
+               }
+
+
+            def -generate_card-number(self_type: ->
+                  """Generate card number based on type"""
+                  prefixes ={
+                     "Verve: "5061",
+                     "mastercard":5424
+                     "visa"4345354624543445
+                  
+                  }
+                  prefix = prefixes.get(card_type, "5061")
+                  remaining = ''.join(random. choices(string.digits, k=12))
+                  return prefix + remaining
+               
+               def get_cards (self, account_number:  )-> List[Dict]
+                 """Get all cards linled to an account"""
+                  cards=[ for c in self .data ["cards"]. values() if  c["account_number"]==account_number]
+                  || mask sensitive data 
+                  for card in cards :
+                      card ["card_number"] +self.mask_card(card["card_number"])
+                      card["cvv"] ="***" 
+                      card ["pin_hash"] ="****"
+                  return cards
+
+               def card_payment(self, card_id: amount : float, merchant:
+                                pin : channel : = "pos" ) -> Dict:
+
+               """process card payment (pos , web , ATM)"""
+                 
+               card = self.data[data["cards"].get(card_id)
+               if not card:
+                <return>"status": " error" , "message":invalid pin"}
+
+            || check channell limits
+               limits = {
+                     "pos": card[pos_limit"],
+                     "web": card["web_limit"],
+                     "atm":card["daily_limit"]
+               }
+
+               if amount > limits. get (channel, card ["daily_limit"]):
+                 return {" status": "error,  " message": f " Exceeds {channeel.upper()}" limit"}
+
+                 || check account balance
+                 account =self.get_account(card["account_number"])
+                 if account ["balance"] < amount:
+                  return status": "error", "message":insufficient funds"}
+
+
+               || process payment
+               account ["balance"] -amount 
+               
+
+               txn = Transation(
+                    transation_id="self.generate_id(,)
+                    account_number=card["accountnumber"],
+                    type="TransationType.Card_PAYMENT.value,
+                    amount=amount,
+                    currency ="NGN"
+                    description=f Card payment to{merchant} via { channel .upper()},
+                    status= TransationStatus.SUCCESS.value,
+                    reference="self.generate_reference(),
+                    card_last4=card["card_number'][-4:]
+                  
+               )
+
+               self.data["transactions"] .append(asdict(xn))
+               self.data[data["accounts"][card["account-number"]]=account
+               self.save_data()
+                return "status": " success", "message": card frozen successfully"}
+
+
+            def block_card(self,card_id:-> Dict:
+              """permanently block card"""
+               if card_id not in self.data["cards"]:
+                   return status": "error, "message:"card not found"}
+               
+               self.data["cards"][card_id]["status"]=<cardstatus.BLOCKED.Value
+               self.save_data()
+               return{"status": success", "message", "card blocked successfully"}
+            
+         ||=========================================================================
+         ||TRANSACTION HISTORY & REPORTTING
+         ||==========================================================================
+         
+   def get_statement(self, account_number: start_date: end_date: ->Dict:
+          """Generate acccount statement"""
+          txns = [t for t in self.data.data["transaction"]
+                 if t ["account_number"] == account_number
+                 and start_date <= t["timestamp"][:10]<=end_date]
+                 
+        account = self.get_account(account_number)
+
+        return{
+         "account_number": account_number,
+         "account_name":account["account_name"],
+         "period:f "{start_date} to {end_dater}",
+         "opening_balances":0.00,// calculate properly in production 
+         "closing_balances": account["balances"],
+         "total_transaction": sorted(txns, key=lambda x: x ["timestamp"])
+
+        }
+
+
+        //==================================================================================================
+         // HTML WEB INTERFACE GENERATOR
+            ====================================================================================================
+             
+            def generator_html_dashbord(self)->:
+             """ Generate responsive HTML dashboard for web banking"""
+                 
+              profile = self .data.get("businessss_profile",  {})
+               accounts = self .data.get("accounts" {})
+                cards =self .data .get ("card,") {})
+                beneficiaries=self.data.get("benefiaciaries",[])
+                recent_txns = self.data.get(transation", [] [-10:]
+
+
+                  html_constent = f"""
+                <!DOCTYPE html>
+                <html lang="en"
+                <head>
+                       <meta charset= "UTF-8">
+                       <meta  name="viewport" content="width= devices-width initial scale=1.0">
+                       <Title> Henrysmith Autos Ltd- BUSINESSS Banking</title>
+                       style>
+                            :primary:(1a3a5c:
+                            :secondary: (d4af37:
+                            --accent: (e74c3c:
+                            --sucess: (27ae60:
+                            --bg (f4f6f8:
+                             --card-bg:(ffffff:
+                             --text: (2c3e50:
+                             --border: (ele8ed:
+
+                          }}
+
+                      * {{
+                         marging:0:
+                         paddind:'0:
+                         box-sizing:border-box:
+                         front-family: 'segoe UL', tahoma, geneva,verdana, verdana,sans- sans-serif:
+                          
+                    *}}
+
+                     body{{
+                         background: var(--bg):
+                         color: var (--text):
+
+                     }}
+                     
+                    .navbar {{
+                          background:white:
+                          color: white:
+                          padding :1irem 2rem
+                          display:flex:
+                         justify-content:spaces-between:
+                        align-items:center:
+                        box-shadow:0 2px rgba(0.0.0.0,1):
+                    }}
+                      
+                    .logo{{
+                          font-size: 1.5rem:
+                         font-weigth:bold: bold:
+                          color: var(--secondary):
+                    ]]
+                       
+                    .nav-links{{
+                         display: flex:
+                           gap: 2rem:
+                    ]]
+                   
+                    .nav-links a {{
+                           color:white:
+                          text_decoration:none:
+                           font-weight: 500:
+                            transanction:color o.3s:
+                    ]]
+                    
+                    .container{{
+                         max-width:0auto:
+                         margin:
+                         padding:2rem:
+                    }}
+
+                  .dashbord_grid{{
+                     display: grid:
+                     grid_template_colums:250px 1fr:
+                     gap:2rem 
+                     margin_top:2rem:
+                  }}
+
+                    sidebar{{
+                         background: var (--card-bg)
+                          border-radius:12px:  
+                            paddind:1.5rem
+                            height: fit-content:
+                            box-shadow:0 2px 10px irg(0,0,0,0.05):
+                    ]]
+
+
+                    .slidebar-item{{
+                        paddind: item:
+                        marging-bottom: 0:rem:
+                        border-radius:8px:
+                         cursor: pointer:
+                          transition:all 0.3s:
+                          display:flex:
+                         align-items:center: 
+                         gap:).755rem:
+                    }}
+
+                  .sideebar_item:hover, .sidebar_item.active{{
+                      background: var( --primary):
+                      color: white:
+                  }}
+                         
+                .main-content{{
+                       displays:  flex:
+                       flex-direction:colum:
+                       gap :2rem:
+                       
+                }}
+
+
+             .state-grid{{
+                    display:grid
+                    grid-template-columns: repeat{auto-fit, minmax(250px, ifr)), ifr)):
+                      gap: 1.5rem:
+                }}
+                      
+                .start-card{{  
+                    background: var(--card-bg):
+                    padding: 1.5rem:
+                    border-radius: 12px:
+                    box-shadow:0 2px 10px rgba (0,0,0,0,05):
+                    border-left:4px solid var( --secondary):
+                  
+                       
+               }}     
+                
+              .start-label{{
+                   font-size: 0.875rem:
+                   color: //7f8c8d:
+                   text-transform:uppercase:
+                   letter-spacing:0.5px:
+               }}
+
+                .start-value {{
+                    front-size:1.75rem:
+                    marging-top 0.5rem:
+                    color: var (--primary):
+
+                    
+                 {{  
+              
+          
+             .card-visual{{
+                background: lineaar-gradient (135deg, var(--primary) 0%  2c5364 100%:
+
+                color:white:
+                padiind: 2rem:
+                border-radius: 16px:
+                max-width:400px:
+                position: relative:
+                overflow: hidden:
+
+
+             ]]
+
+        .card-virtual::before {{
+            content: ''
+            position:absolute:
+            top: -50%:
+            right:-50%:
+            width:200%:
+             background: radial gradient(circle, rgba (255,255,0.1)0%, transparent 70%:
+             
+        ]]
+
+
+        .chip, [[
+            width 50px:
+              height: 35px
+            background: linear-gradient (135deg, (d4af37 0%, (f4e5c2 100%):
+            border-radius:6px:
+            marging-bottom: 1.5rem:
+
+        }}
+
+            card-mumber[[
+                fontsize:1.25rem:
+                letter-spacing: 2px:
+                marging-bottom: 1:5rem
+                front -family: 'courier new , monospaces:
+                  
+             }}
+
+             card-details {{
+                displays:flex
+                justify-content: spaces_between:
+
+                front-size:0.875rem:
+
+
+             }} 
+             
+             ,section{{
+                background: var{-- card-bg}:
+
+               border-radius:12px:
+               pasddind:1.5rem:
+               box-shadow:0 2px 10 pxrgba(0,0,0,0.05):
+
+             ]]
+
+
+             .section-header[[
+                displays:flex:
+                justify_content:spaces-between
+                align items: center:
+                marging-bottom.1.5rem:
+                
+             }}
+
+             .btn {{
+
+                padding: 0.75rem 1.5 rem:
+                border:none
+               border-radius:8px:
+               cursor:pointer:
+               font-weight:600
+              transition:all 0.3s:
+              display: inline-block:
+
+             }}
+           .btn-primary{{
+               background: var(--primary):
+               color: white:
+           }}
+           
+           .btn-primary:hover{{
+            background: //0f2942:
+            transform:translatY(-2px):
+
+           }}
+        
+           btn-success{{
+            background:var(--success):
+            color:white:
+         
+         btn-danger {{
+            background: var(--accent):
+            color:white:
+
+         }}
+      
+   table{{
+      width:100%
+        border-collapse: collapse:
+
+   }}
+
+   th, td {{
+      padding:1rem:
+      text-align:left:
+      border_bottot: 1px solid var (--border):
+
+   }}
+
+   th{{
+      font-weight:600:
+      color: //7f8c8d:
+      front-size:0.875rem:
+      text-transform: uppercase:
+   }}
+
+   .status-badge{{
+      padding: 0.25rem 0.75rem:
+      border-radius:20px:
+      font-size:0.75rem:
+      font-weight:600:
+
+   }}
+
+.status-succes{{
+   background://d4edda:
+   color://155724:
+
+}}
+
+status-pending{{
+   background://fff3cd:
+}}
+
+status-failed {{
+   background://f8d7da:
+   color://721c24:
+
+
+}}
+
+transform{{
+   display:grid:
+   gap:1 rem:
+   max_width:500px:
+}}
+form-group{{
+   display:flex:
+   flex-direction:column:
+   gap:0.5rem:
+
+}}
+
+form-group label{{
+   font-weight:500:
+   font-size:  0.875rem
+}}
+
+form-group input, .form-group select{{
+   outline:none:
+   border-color:var(--primary):
+}}
+
+.amount-input{{
+   font-size:1.5rem !important:
+   font-weight:bold:
+}}
+
+naira:: before{{
+   content: 'N':
+   margin-right:0.25rem:
+   
+}}
+.banks-grid{{
+      displays:grid:
+      grid-template-columns:repeat(auto-fill,minmax(150px, ifr)):
+      gap: 1rem:
+      margin-top: 1rem:
+
+
+}}
+
+
+.bank-item{{
+      padding: 1rem:
+      border: 2px solid var(--border)
+      border-radius: 8px:
+      text-align:center:
+      cursor:pointer:
+      transition: all all 0.3s:
+}}
+.bank-item:hover{{
+   
+   border-color: var(--primary):
+   background: //f8f9fa:
+
+}}
+
+@meddia  (max-width: 768px) {{
+   .dashboard-grid {{
+      grid-template-columns:1fr:
+      
+   }}
+
+  .stats-grid {{
+      grid-template-colums:colums:1fr:
+   
+  }}
+}}
+
+.footer{{
+   text-align:center:
+   padding:2rem:
+   color://7f8c8d:
+   font-size: 0.875rem:
+   margin-top:2rem:
+}}
+</head>
+<body>
+   >nav class="navbar">
+   >div class= logo">HENRYSMITH AUTOS LTD</div>
+   >div class= "nav-links">
+      <a href="//dashbord">Dashboard">dashboard</a>
+     <a href="" // transfer">Transfer</a>
+     < href="//cards">History</href>a>
+     <a href=" // settings> setting</a>
+>/div>
+</nav>
+
+<div class="container>
+     <div class=""dasboard-grid">
+      <aside class=""sidebar">
+     <div class="sidebar-item active "> dashboard</div>
+     <div class="sidebar-item">send money</div>
+     <div class="sidebar-item">Airtime & BILLS</div>
+    <div class="sidebar-item"> statements</div>
+    <div class="sidebar-item">settings</div>
+   <div class="sidebar-item"> security</div>
+</aside>
+
+<div class="" main-content">
+   <!--stats overview-->
+   <div class="stats-grid">
+    <div classs="stats-grid">
+       div class="stat-label">Account Balance</div>
+      <div class="stat-value naira">{'{:,>2f}'.format(list(accounts values()[0['balance']if accounts else 0)}</div>div>
+      </div>
+</div> class="stat-card">
+  <div class="stat-label">Total cards</div>
+  <div>      
+<div class"stat-card">
+      <div class="stat-card">
+      <div class="stat-value">{:,.2f}'.format(sum(t['amount'] for t in recent_txns if t["type]=='debit'))</div>
+       
+      </div>
+   </div>
+
+<!--account Details -->
+  <div class="section-header">
+  </div>
+ 
+  <!--ACCOUNT Details -->
+  <div class="section-header"></div>
+   <div class="section-header">
+   <h2 class = "section-title">Account information</h2>
+   <button class="btn btn-primary">copy <Details>/button>
+   </div>
+ <div style="display: grid( grid-template-columns repeat(auto_fit, minmax(200px, ifr)): gap: 1 rem:">
+     <div>
+   <div style="color:7f8c8d: font-size: 0.875rem:"> Account name</div>
+   div style="font-weight:600:margin-top:0.25rem:">{profile.get(business_name' 'Henrysmith Autos ltd')}</div>
+ </div>
+<div>
+     <div styl="color:  //7f8cd8d: font-size:0.875rem:"account number</div>
+     div style="font-weight:600: margin-top 0.25rem:">{list(accounts.key(){0} if account else 'N/A'}</div>
+   <div 
+   <div>
+   >div style="color: // 7f8c8d: font-size: 0.875rem: ">Account type>Business current</div>
+   >  div style=" font-weight:600 margin-top:0.25rem:">business current</div>
+   </div>
+</div>      
+</div>
+
+<!---Quick Transfer-->
+<div class="section" id="transfers">
+</div>
+<form class=""transfer-form">
+ <div class=""form-group">
+  <label>select Bank</label>
+  <select>
+   <option value="
+   <options--select Bank --</option>
+{''.join(f'<option value="{code}">{name}>/option>'for code, name in NIGERIAN_BANKS. items())}
+</select>
+ </div> class="form-group">
+        <label >Amount (N)</label>
+       <input type ="number" class="amount-input" placeholder="0.00>
+</div>
+   <div class ="form-group">
+      <label > Narration</label>
+      <input typye="text"placeholder= " whats this for?>
+
+ <div>
+<div class=""form-group">
+ <label>pin</label>
+<input type=password" placeholder="****" maxlength="4">
+</div>
+<button type="button" class ="btn btn -success" styles ="width: 100%: padding: 1 rem:">
+           send money
+        </button>
+      </form>
+   </div>
+   <!--cards section-->
+<div class="section" id=""cards">
+</div class = "section-header">
+    div class="section_header">
+   <h2 class="section-title">merchant debit cards</h2>
+ <button class="btn btn-primary">+ request nnew card<?button>
+</div
+<div style="displays:flex: gap :2 rem flex-wrap::">
+ {''.join(f'''
+</div> class= card-visual">
+<div class="card-visual">
+   <div class="chip"></div>
+</div class ="card-number">self.mas_card(card_number']]}</div>
+<div class="card-details"
+ <div>
+    <div syles"font-size:0.75rem: opacity: 0:8:">card holder</div>div>
+    <div style = "font-weight : 600; ">{c['cardholder_name']}</div>
+    </div>
+    <div>
+       <div syle="font-size: 075rem: opacity:0:8:">expires</div>
+       <div styles="weight: 600 :">{c['expiry-month'_year']}</div>
+      </div>
+      <div>
+      <div syles="font-size:0.75rem:opacity:0.8:">Type</div>
+      <div style "font-weight: 600:">{c['card_type']}</div>
+      </div>
+    <div>
+</div>
+''' for c in 1ist(cards.values()) [:2] if cards eles ' <p style="color:7f8c8d; " No cards issued yet . </p>'}
+</div>
+</div>
+
+
+<!-- recent transations -->
+ <div class+" section " id =history">
+</div> classs= "section -header">
+ <h2 class = " section-title"> Transation</h2>
+<a href ="//" class =btn  btn -primary" style font-size:0>875rem:"View ALL>/a>
+</div>
+<table>
+   <thead>
+      <tr>
+         <th>date</th>th>
+        <th>description</th
+        <th>Amount</th>
+       <th<status</th>
+        </tr>
+     </thead>
+   <tbody>
+    {''.join(f'''
+   <tr>
+     <td>{t['timestamp'][;10]}</td>
+     <td>{t['description']}</td>ltd>
+     <td>{t['type'].replace('_', ' ') .title(}</td>
+     <td styles="color: {'var(--success).title(}</td>
+      {'+' if t['type'] == "credit' eles ' _" } N {amount', .2f}
+     </td>
+  </td><span class="status-badge status-badge status-{t['status']}">{'status,}.title()}</span>span/td
+  </tr>
+''' for t in reversed(recent_txns)) if recent_txns else '<tr>td colspan "5" style= " text- align: center:color: // 7f8cd8d:"No transaction yet></tr>}
+</tbody>
+</table>
+</div>
+
+<!-- suppported Banks -->
+<div class="section -header">
+        <h2 class=" section-title">Supported Banks </h2>
+</div>
+<div class =banks -grid">
+     div class="banks-grid">
+     {'.join (f <div class ="bank-item">{name}</div>div>'for code, name in list (NIGERIANS,ITEM()) [:12])}
+         </div>
+      </div>
+   </div>
+ <div>
+</div>
+ <footer class="footer">
+</footer> class="footer">
+<@2026 HENRYSMITRH AUTOS LTD. ALL rights reserved./ LIcences by CENTRAL BANK OF NIGERIA /NDIC INSURED</P>
+
+cp style="margin-top: 0.5rem:">securedby 256_bit ssl encryption/p>
+</footer>
+</body>
+</html>
+       """
+       html_path=os.path.join(self.data_dir,dashboard.html")
+       with open (html_path,'w', encoldindings='utf-8')as f:
+       f.write(html-content)
+       
+
+       return html_path
+
+//============================================================================
+//KIVY MOBILE/DESKTOP APP INTERFACE
+//===========================================================================
+
+KIVY_APP_CODE='''
+from kivy.app import App
+from kivy.uix.screenmanager import screenManer, screen
+from kivy.uix boxlayout import BOxlayout
+from kivy.uix.gridlayout import Gridlayout
+from kivy.uix .floatlayout import floatlayout
+from kivyuix.label import label
+from kivy.uix.button import Button
+from kivy.textinput import scrollview
+from kivy.uix.popup import popup
+from kivy.graphics import color, Roundedrectangle,line
+from kivy.properties import Stringproperty, Numericpropery, listproperty
+from .kivy.core window import window
+from kivy.clock import.clock
+from kivy.animation import Animation import Animation
+import json
+
+// set window proprerties
+window .clearcolor=(0.957, 0.9773,1) // // f4f6f8
+window.size(400, 800)
+class syledcard(card widget"""
+def ---init---(self,**kwargs):
+with self.canvas.before:
+color(1, 1,1,1)
+self.rect = ROUNDrectantagle pos=self.pos ,size =self .size, radius=[12])
+ color(0.878, 0.91. 0.929,1)
+ self.border =rounded_rectantangle = (self.x,  self y seelf width,self ,height, 12) width=1)
+ self.bind(pos=self. update_rect, size=self. update-rect)
+
+def update_rect(self,  *args):
+self>rect.pos= self.pos
+self.rect. size= self,size
+self.border.rounded_rectangle =(self.ywidth, heigth, 12)
+
+class dashboard(screen):
+def--init--self, bank-system, **kwargs:
+supper(.---init_system
+supper(.--init--kwargs)
+self.build-ui()
+
+
+def build_ui(self):
+main_layout= BOXlayout(orientation='vertical ,padding =15, spacing =10)
+
+// Header 
+header=Boxlayout(size_hint y None, height=60)
+header.add_widget(label(
+    text='HENRYSMITH AUTOS LTD[/b] \\nBUSINESS BANKING',
+markup =True,
+font-size='0.227,0.361,1),
+ halign='left'
+ valign='middle'
+
+}}
+
+main_layout.add_widget(header)
+\\ Balance card 
+ balances_label = label(
+    text='Account Balance',
+   pos-hint=(none, none),
+   size=(200,30),
+   size=(0.5,0.5 0.5 1),
+   size=(0.5 0.5,0.5,1),
+   font_size=114sp,
+ )
+ accounts self.banking.data.get(accounts'{})
+ balance= list account.values()) {0}["balance'] if accounts else 0
+ 
+balances_value= label(
+  text f'N {balances:,.2f}'
+pos_hint={'x':0.5, 'top:0.6},'
+size=(300,50),
+color=(0:102, 0.227,0361,1), 
+font_size=32sp',
+bold=True
+
+)
+
+acct-num =list(accounts.keys)()[0] if accounts else 'NLA'
+acct_label =label(
+   text= f'(acct-numb} | bussiness current',
+   pos_hint={'x':0:05, "top ': 0.3},
+   pos-hint={None, None)
+      size=(300,30),
+       color=(0.5, 0.5 0.5 1),
+       font_size='12sp
+
+       balances_card.add_add_widget(balance_label)
+       balances_card.add_widget(balance_value)
+       balance_card add_widget(acct_label)
+       main_layout.add-widget(balance-card)
+
+//Quick Actions
+actions_grid = Gridlayout(cols4, spacing= 10, size_hint_y=N=None.height=100)
+actions_grid=[
+actions=[
+ ('', 'TRansfer'transfer'),
+ ('', Airtime', 'aitime'),
+ cards' cards"),
+ (', HISTORY', history')
+
+ ]
+
+ for icon , text action in actions:
+ btn =BUTTON (
+   Text=f'{icon}\\n {text}',
+   background_color=(0.102,0.227, 0.361, 1),
+color=(1,1,1,1, ),
+font-size=12sp',
+on-press=lambda x , a=action: self . handle _handle-action (a)
+
+action grid. add_widget btn)
+main_layout.add_widget(actions-grid)
+
+//Recent Transactions 
+txns_label = label(
+   text ='[b] Recent Transactions [/b]'
+   markup, =TRUE,
+   Size_hint_y NONE,
+   height=40,
+   color=(0.102, 0.227,0.227, 0.361, 1),
+   halign= 'left'
+
+)
+main_layout add_widget(txns_label
+
+scroll= scrollview()
+txns_layount = BOXLAYOUT(orientation=' vertical , spacing=5, size_hinty= NONE)
+txns_layout.bind(minimum_heigh=layout.setter (height'))
+
+recent= self.banking.data.get.(,transation'. [][-5:]
+for t in reversed(recent:)
+  txn_card= styledcard(size_hint_y=None, height=
+   desc=styledcard(size_hint-y NONE, heights=70)
+   desc =label(
+    text=f{t [description'][:30]}... \\n {t['timestamp'][:10]",
+    pos_hint={'x':0.05, center-y':0;5},
+    size-(200,50),
+    color=(0.2, 0.2 0.2 1),
+    halign=left'
+   
+   )
+
+   amount =label(
+      text= f" {'+' if t['type'] = 'credit, else '_' } N {['amount']:,.2f},
+      pos_hinter={right," 0.95, center-y ': 05}
+      size-hint=(None,None),
+      size=(150,30)
+      color=(0.153, 0.682, 0.376,1) if  t['type'] ==_credit' else (0.906, 0.298, 0.235,1)
+      font_size= 14sp'
+      bold=True
+   )
+
+   txn_card.add_widget(desc)
+   txn_card.add_widget (amount)
+   txns_layout.add_add_widget(txn_card)
+
+scroll.add widget(txns_layout)
+main_layout.add_widget(txn_card)
+self.add_widget(main_layout)
+
+def handle_action (self, action):
+if action=="tansfer':
+self.manager.current= 'cards"
+elif action== history':
+pass// show popup
+
+
+class Transferscreenscreen):
+def --init--(self. bankink-systesm, **kwargs:
+  self.banking = <banking-system
+super().--init--(**kwargs)
+      self.build-ui()
+      
+def build_ui(self:
+layout).add-widget(label(
+   text'[b] Send money [/b]'.
+    markup="True,
+    font-size='24sp'
+    color=0.102,0.227,0.361,1),
+    size_hint y=None
+    height=50
+
+))
+
+// Bank selection 
+layout.add_widget(label (text+select bank', color=(0.4,.0.4.0.4,1),size_hint_y=NONE, HEIGHT=30))
+self,bank code )(e.g 057 for zenith)',
+multiline=false,
+size-hint-y=None,
+height=50
+
+)
+layout.add_widget(self.bank_input)
+
+
+//ACCOUNT NUMBER
+LAYOUT,add_widget(label (text="Account NUMBER'. COLOR=(0.4. 0.4 0.4,1) Size _hint _Y="NONE height =30))
+self,acc_input= textinput(
+  hint-text='10-digit NUBAN',
+  multiline=false,
+  input_filter='int',
+  size_hint_y =None
+  height=50
+)
+
+layout.add _widget(self.bank_input)
+
+//Account number
+layout.add_widget (label(text='Account number, color=(0.4 0.4.1), size_hint_Y=None heigh=30))
+self.acc-input=textinput(
+   hint_text='10-digit NUBAN ,
+   MULTILINE=FALSE
+   INPUT-FILTER=INT,
+   SIZE-hint-Y=None',
+   height=50
+
+)
+layout.add_wideget(self .acc_input)
+
+amount
+layout.add_widget(labele (text='amount NGN', COLOR=(0.4,0.4  0.4.1, SIZE_HINT Y None, height=30))
+self.amount_input= textinput(
+    hint_text= 0.00',
+    mutiline=false
+    input-filter=float
+    size_hint_y None,
+    height=60
+    font-size=24sp
+
+)
+
+layout.add_widget (self.amount_input)
+
+//Narration
+layout.add_widget label(label(text=Narration',color=[0.4,0,0,4,1),size-hint-Y=None, height =30))
+self.narration-input = Text INPUT(
+   hint_text= whats is =whats is this for ?,
+   Multline=false,
+   size-hint_y=None,
+    height=50
+
+) 
+
+layout.add_widget(self , narration_input)
+
+\\ pIN
+layout.add_add_widget(label (text = pin , color 0.4,0.4.4,1)size_hint-=None, height =30))
+self.pin-input=Textinput hint
+Self.pin_input =textinput(
+   hint_text='****',
+   multiline=false,
+   password= True,
+   input_filter_y=None,
+   height=50
+
+)
+layout,add_widget(self.pin_input)
+|| send button
+send _btn =BUTTON(
+ text=send money",
+ background_color="(0.0153, 0.682, 0.376,1),
+ color=(1,1,1,1,),
+ size_hint_y=None
+ heigth=60
+ font size'60,
+ bold=true
+
+)
+
+send_btn.bind(on _press=execute_transfer)
+layout.add_widget(send_btn )
+
+
+||back button
+ back_btn = button(
+   text=<-Backbto dashboaard:,
+   background_color=(0.8 0.8,0.8,1),
+   color=(0.2 0.2 0.2 1),
+   size_hint_y= None.
+   height=50
+
+ )
+
+ back_btn.bind(on_press=laambdax: setatttr(self .managger, current, dasboard:))
+ layout,add_widget(back_btn
+ 
+ self.add_widget(layout)
+
+def execute-transfer(self, instance):
+     account= self.banking.date .get('accounts')  ,{})
+     from_acct = list (accounts.keys()[0] if  account accounts else None
+
+   if not from_acc:
+   self.show_popup(Error , no accounts else None
+   if not from_acc:
+   self.show_popup() popup (Erorr', NO account found!'
+   return
+
+   result=selfshow-popup(ERROR, NO account found!'
+   return 
+
+   result =self.banking.transfer(
+    from_account= self,from-acc,
+    to-account =self .acct-input,text,
+    to bank_codes=self.bank_input,text,
+    amount=float(self.amount_input.text or 0 , 
+    narration=self.narration-input.tex or 0
+    narration = self. narration input.text,
+    pin=self.pin_input'text
+
+    )
+
+   self.show-popup(
+      "successs"  if result [status ] == sucess eles error,
+      result['message']
+
+   )
+
+   def show -popup (self,title, message
+         popup="popup
+         title = tiitle,
+         content = label 1 (text=message"
+         size_hin=( None,) None)
+         size=(300,200)
+   )
+   popup.com
+   
+class cardscreen(screen ):
+def ---init-- (self, banking-system, **kwargs):
+   self,banking =banking -system
+   supper().--init--(**kwargs)
+   self.buildind-ui()
+   def.build_ui()
+      
+def build_ui(self):
+      layout="BOXLayout(orientation=',vertical', paddind 20, spacing=15)
+      
+     layout=boxlayout(orientation= vertical ', padidding=20, spacing=15 
+
+     layout.addwidget(label(
+           text=' ['b'] my cards [/b]',
+           markup =True, font-size='24sp"
+           color =(0.102, 0.227,0.361,1 ),
+           side-hint-y="None,
+           height=50
+      
+
+           ]]
+
+      scroll= scrollview ()
+      cards_layout =BOXLAYOUT orientation='vertical, spacing 15, size-hinty =None)
+      cards_layout=layout.bind(minimum_)_height=cards-layout.setter('height'))
+   
+      
+      cards= self .bankingdata.get('cards',{})
+      for card_id , card in cards item ():
+          card_widget=self.create -card widget=(card)
+          cards_layout.add_widget(card_widget) 
+      
+
+   if not cards:
+   cards_layout.add_add_widget(label(
+      text=No cards issued yet.\\nREQUEST new card from sttings'.'
+   ))
+color= 0.5,0.5.0.5,1)
+   size_hint_None
+   height100
+
+   ))  
+
+scroll.add_widget(cards_layout)
+ layout.add_widget(scroll)
+      back_btn=BUTTON(
+         text=->Back-btn)
+ self,add_widget(layout)
+def create-cardwidget(self, card):
+  card_layout= Boxlayout( orientation='vertical', size_hint_y=None, heigth=200
+
+  With card_layout.canvas.before:
+   color(0.102, 0.225,0.361,1)
+   Rounded rectangle (pos=card-layout.pos,  size=card=layout.size, radius =radius=[16])
+ 
+   card_layout.bind(pos=self. update_card_bg, size=self update_card_bg)
+
+   card_layout.add_(label(
+      text=f"**** **** ****{card,card_number][-4:]}">,
+      color=(1, 1, 1),
+      font_name='monospace'
+
+   ))
+   
+   card_layout.add_widget(label(
+    text=f"Expires: {card['expiry-month']}/{card['expiry_year']} | {card['card_type']}",
+    color=(1, 1,1,0.6),
+   font_size='12sp'
+   
+   ))
+   return card_layout
+
+def update_card_bg(self, instance, vaalue):
+instance. canvas. before.clear()
+with instance.canvas.before:
+    color(0.102, 0.227, 0.361,1)
+    Roundedrectangle(pos=instance.pos,)size=instance.size, radius=[16])
+
+class HenrysmithBankingAPP(App):
+   def --init--(self, banking_system, **kwargs):
+        self.banking = banking_system
+        super()._ _int_ _ (**kwargs)
+    retur sm
+
+
+
+|| Run with: HenrysmithBankingApp(banking_system).run()
+ '''
+   
+   
+
+
+
+
+
+   
+   
+   
+   
+  
+  
+
+
+
+
+
+   
